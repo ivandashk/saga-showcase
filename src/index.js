@@ -10,10 +10,8 @@ import './index.css';
 const store = configureAppStore();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <MonitorInitializer sagaMonitor={sagaMonitor} sagaMiddleware={sagaMiddleware} />
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <MonitorInitializer sagaMonitor={sagaMonitor} sagaMiddleware={sagaMiddleware} />
+  </Provider>,
   document.getElementById('root')
 );

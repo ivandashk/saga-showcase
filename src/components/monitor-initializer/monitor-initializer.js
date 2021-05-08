@@ -2,6 +2,7 @@ import { useEffect, useReducer } from 'react';
 
 import { App } from '../app/app';
 import { rootSaga } from '../../sagas/index';
+import { appendNode } from '../../utils/tree-utils/append-node';
 
 const monitorReducer = (state, action) => {
     switch (action.type) {
@@ -11,9 +12,15 @@ const monitorReducer = (state, action) => {
                 rootSagaStarted: true
             };
         case 'effectTriggered':
+            const { effectId, parentEffectId } = action.payload;
+
             return {
                 ...state,
-                effectTriggered: [...state.effectTriggered, action.payload]
+                effectsTree: appendNode(state.effectsTree, effectId, parentEffectId),
+                effectsMap: {
+                    ...state.effectsMap,
+                    [String(effectId)]: action.payload
+                }
             };
         case 'actionDispatched':
             return {
@@ -23,8 +30,8 @@ const monitorReducer = (state, action) => {
         case 'effectResolved':
             return {
                 ...state,
-                effectResolved: {
-                    ...state.effectResolved,
+                resolvedEffectsMap: {
+                    ...state.resolvedEffectsMap,
                     [action.payload]: true
                 }
             };
@@ -36,9 +43,10 @@ const monitorReducer = (state, action) => {
 export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
     const [effectsState, dispatch] = useReducer(monitorReducer, {
         rootSagaStarted: false,
-        effectTriggered: [],
+        effectsMap: {},
         actionHistory: [],
-        effectResolved: {}
+        resolvedEffectsMap: {},
+        effectsTree: []
     });
 
     useEffect(() => {
@@ -59,7 +67,7 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
 
         sagaMiddleware.run(rootSaga);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, []);
 
     return <App effectsState={effectsState} />;
 };

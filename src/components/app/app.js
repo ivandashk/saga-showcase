@@ -7,7 +7,7 @@ import { EffectsVisualizer } from '../effects-visualizer/effects-visualizer';
 export const App = ({ effectsState }) => {
     const dispatch = useDispatch();
 
-    const { rootSagaStarted, effectTriggered, actionHistory } = effectsState;
+    const { rootSagaStarted, effectsMap, effectsTree, actionHistory, resolvedEffectsMap } = effectsState;
 
     const handleClick = useCallback(() => {
         dispatch({ type: 'Action' });
@@ -20,7 +20,12 @@ export const App = ({ effectsState }) => {
 
             <ActionHistory actionHistory={actionHistory} />
 
-            <EffectsVisualizer rootSagaStarted={rootSagaStarted} effectTriggered={effectTriggered} />
+            <EffectsVisualizer
+                rootSagaStarted={rootSagaStarted}
+                effectsMap={effectsMap}
+                effectsTree={effectsTree}
+                resolvedEffectsMap={resolvedEffectsMap}
+            />
         </>
     );
 };
