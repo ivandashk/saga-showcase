@@ -1,7 +1,20 @@
+import { useDispatch } from 'react-redux';
+import { useCallback } from 'react';
+
+import { increment } from './reducers/counter';
+
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+
+export const App = () => {
+  const dispatch = useDispatch();
+
+  const handleClick = useCallback(() => {
+    dispatch(increment());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,9 +30,8 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={handleClick}>Hit me</button>
       </header>
     </div>
   );
 }
-
-export default App;
