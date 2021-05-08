@@ -1,22 +1,24 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { rootReducer } from './reducers';
-import { rootSaga } from './sagas';
+export const sagaMonitor = {};
 
-const sagaMiddleware = createSagaMiddleware();
+export const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
+
+const rootReducer = {
+  stub: createSlice({
+      name: 'stub',
+      initialState: {},
+      reducers: {}
+  }).reducer,
+};
 
 export const configureAppStore = () => {
   const store = configureStore({
     reducer: rootReducer,
     middleware: [sagaMiddleware, ...getDefaultMiddleware()],
   });
-
-  if (process.env.NODE_ENV !== 'production' && module.hot) {
-    module.hot.accept('./reducers', () => store.replaceReducer(rootReducer));
-  }
-
-  sagaMiddleware.run(rootSaga);
 
   return store;
 };

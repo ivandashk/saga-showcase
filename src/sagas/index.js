@@ -1,12 +1,9 @@
 import { takeEvery } from 'redux-saga/effects'
 
-import { increment } from '../reducers/counter';
-
-function* log() {
-    console.log('yay');
-    yield;
+function* custom(action) {
+    yield action;
 };
 
 export function* rootSaga() {
-    yield takeEvery(increment, log);
+    yield takeEvery('Action', custom);
 };

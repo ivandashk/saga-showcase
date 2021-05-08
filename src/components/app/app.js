@@ -1,17 +1,26 @@
 import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 
-import { increment } from '../../reducers/counter';
+import { ActionHistory } from '../action-history/action-history';
+import { EffectsVisualizer } from '../effects-visualizer/effects-visualizer';
 
-export const App = () => {
-  const dispatch = useDispatch();
+export const App = ({ effectsState }) => {
+    const dispatch = useDispatch();
 
-  const handleClick = useCallback(() => {
-    dispatch(increment());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const { rootSagaStarted, effectTriggered, actionHistory } = effectsState;
 
-  return (
-      <button onClick={handleClick}>Hit me</button>
-  );
+    const handleClick = useCallback(() => {
+        dispatch({ type: 'Action' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return (
+        <>
+            <button onClick={handleClick}>Dispatch action</button>
+
+            <ActionHistory actionHistory={actionHistory} />
+
+            <EffectsVisualizer rootSagaStarted={rootSagaStarted} effectTriggered={effectTriggered} />
+        </>
+    );
 };

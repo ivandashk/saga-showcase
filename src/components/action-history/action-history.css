@@ -1,0 +1,4 @@
+.action-history {
+    display: flex;
+    flex-wrap: wrap;
+}
