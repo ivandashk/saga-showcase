@@ -1,5 +1,8 @@
-import { put, takeEvery,
-    // call, takeLatest
+import {
+    put,
+    takeEvery,
+    // call,
+    // takeLatest
 } from 'redux-saga/effects'
 
 function* actions() {

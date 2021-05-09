@@ -1,0 +1,17 @@
+.app__action-button {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 30px;
+    background-color: lightgreen;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+.app__action-button:hover {
+    background-color: rgba(144, 238, 144, 0.85);
+}
+
+.app__effects {
+    display: flex;
+}

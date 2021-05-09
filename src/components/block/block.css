@@ -1,6 +1,6 @@
 .block {
     margin: 5px 0 0 5px;
-    padding: 20px;
+    padding: 10px 20px;
     max-width: 200px;
     display: flex;
     flex-direction: column;
@@ -9,7 +9,9 @@
     border: 1px solid #333;
     position: relative;
     cursor: pointer;
+    transition: background-color 500ms linear;
 }
+
 
 .block_fork {
     background-color: lightgoldenrodyellow;

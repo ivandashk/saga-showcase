@@ -2,9 +2,12 @@ import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 
 import { ActionHistory } from '../action-history/action-history';
+import { EffectsHistory } from '../effects-history/effects-history';
 import { EffectsVisualizer } from '../effects-visualizer/effects-visualizer';
 
-export const App = ({ effectsState }) => {
+import './app.css'
+
+export const App = ({ effectsState, history }) => {
     const dispatch = useDispatch();
 
     const { rootSagaStarted, effectsMap, effectsTree, actionHistory, resolvedEffectsMap } = effectsState;
@@ -16,16 +19,19 @@ export const App = ({ effectsState }) => {
 
     return (
         <>
-            <button onClick={handleClick}>Dispatch action</button>
+            <button className={'app__action-button'} onClick={handleClick}>Dispatch Action</button>
 
             <ActionHistory actionHistory={actionHistory} />
 
-            <EffectsVisualizer
-                rootSagaStarted={rootSagaStarted}
-                effectsMap={effectsMap}
-                effectsTree={effectsTree}
-                resolvedEffectsMap={resolvedEffectsMap}
-            />
+            <div className={'app__effects'}>
+                <EffectsVisualizer
+                    rootSagaStarted={rootSagaStarted}
+                    effectsMap={effectsMap}
+                    effectsTree={effectsTree}
+                    resolvedEffectsMap={resolvedEffectsMap}
+                />
+                <EffectsHistory history={history} />
+            </div>
         </>
     );
 };

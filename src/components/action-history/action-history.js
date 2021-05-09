@@ -9,7 +9,7 @@ export const ActionHistory = ({ actionHistory }) => {
 
     return (
         <>
-            <h3>Action History</h3>
+            <h3>Actions Dispatched</h3>
             <div className={'action-history'}>
                 {actionHistory.map(({ type }, i) => (
                 <Block
