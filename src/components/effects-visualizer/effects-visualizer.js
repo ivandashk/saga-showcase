@@ -1,3 +1,5 @@
+import YAML from 'json-to-pretty-yaml';
+
 import { Block } from '../block/block';
 
 import './effects-visualizer.css';
@@ -5,18 +7,19 @@ import './effects-visualizer.css';
 const Row = ({ effectsTree, effectsMap, resolvedEffectsMap }) => {
     return effectsTree.map(node => {
         const { key, children } = node;
-        const { effectId, parentEffectId, effect: { type, payload } } = effectsMap[key];
+        const { effectId, parentEffectId, effect } = effectsMap[key];
         const isResolved = Boolean(resolvedEffectsMap[key]);
 
         const block = (
             <Block
                 key={effectId}
                 disabled={isResolved}
-                mod={type}
                 parentEffectId={parentEffectId}
                 id={effectId}
-                name={type}
-                payload={payload}
+                name={effect.type || effect}
+                mod={effect.type}
+                payload={effect.payload}
+                fullInfo={YAML.stringify(effectsMap[key])}
             />
         )
 

@@ -7,10 +7,14 @@ const chooseModData = (mod, payload) => {
                 modificator: 'fork',
                 additionalText: String(payload.fn)
             }
+        case 'CALL':
+            return {
+                modificator: 'call',
+                additionalText: String(payload.fn)
+            }
         case 'TAKE':
             return {
-                modificator: 'take',
-                additionalText: JSON.stringify(payload)
+                modificator: 'take'
             };
         default:
             return {
@@ -19,11 +23,11 @@ const chooseModData = (mod, payload) => {
     }
 }
 
-export const Block = ({ id, name, mod, payload, disabled }) => {
+export const Block = ({ id, name, mod, payload, disabled, fullInfo }) => {
     const { modificator, additionalText} = chooseModData(mod, payload);
 
     return (
-        <div className={`block ${modificator ? `block_${modificator}` : ''} ${disabled ? `block_disabled` : ''}`}>
+        <div className={`block ${modificator ? `block_${modificator}` : ''} ${disabled ? `block_disabled` : ''}`} title={fullInfo}>
             <div className={'block__main-text'}>{id ? `${id}: ${name}` : name}</div>
             <div className={'block__add-text'}>{additionalText}</div>
         </div>
