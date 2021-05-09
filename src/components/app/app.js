@@ -22,7 +22,6 @@ export const App = ({ effectsState, history, onHistoryItemClick, effectsMap, han
         <>
             <button className={'app__action-button'} onClick={handleClick}>Dispatch Action</button>
 
-            <ActionHistory actionHistory={actionHistory} />
 
             <div className={'app__effects'}>
                 <EffectsVisualizer
@@ -31,7 +30,8 @@ export const App = ({ effectsState, history, onHistoryItemClick, effectsMap, han
                     effectsTree={effectsTree}
                     resolvedEffectsMap={resolvedEffectsMap}
                 />
-                <EffectsHistory history={history} onItemClick={onHistoryItemClick} />
+                <EffectsHistory history={history} onItemClick={onHistoryItemClick} effectsMap={effectsMap} />
+                <ActionHistory actionHistory={actionHistory} />
             </div>
         </>
     );

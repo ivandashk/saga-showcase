@@ -3,14 +3,10 @@ import { Block } from '../block/block';
 import './action-history.css'
 
 export const ActionHistory = ({ actionHistory }) => {
-    if (!actionHistory.length) {
-        return null;
-    }
-
     return (
-        <>
+        <div className='action-history'>
             <h3>Actions Dispatched</h3>
-            <div className={'action-history'}>
+            <div className={'action-history__items'}>
                 {actionHistory.map(({ type }, i) => (
                 <Block
                     key={`${type}_${i}`}
@@ -19,7 +15,6 @@ export const ActionHistory = ({ actionHistory }) => {
                 />
                 ))}
             </div>
-        </>
-
+        </div>
     )
 }

@@ -1,15 +1,30 @@
 import './effects-history.css'
 
-export const EffectsHistory = ({ history, onItemClick }) => {
+export const EffectsHistory = ({ history, onItemClick, effectsMap }) => {
     return (
         <div className={'effects-history'}>
             <h3>History</h3>
             <div className={'effects-history__items'}>
-                {history.map(({ type, effectId }, i) => (
-                    <button key={`${type}${effectId}${i}`} onClick={() => { onItemClick(i + 1) }}>
-                        {effectId ? `${type}: ${effectId}` : type}
-                    </button>
-                ))}
+                {history.map(({ type, effectId }, i) => {
+                    const effect = effectsMap[effectId];
+
+                    const content = effect
+                        ? `${effectId}: ${effect.effect.type}`
+                        : effectId || ''
+
+                    return (
+                        <button
+                            className={'effects-history__item'}
+                            key={`${type}${effectId}${i}`}
+                            onClick={() => { onItemClick(i + 1) }}
+                        >
+                            <div className={'effects-history__item-type'}>{type}</div>
+                            <div className={'effects-history__item-content'}>
+                                {content}
+                            </div>
+                        </button>
+                    )
+                })}
             </div>
         </div>
     );

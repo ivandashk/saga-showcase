@@ -1,4 +1,11 @@
 .action-history {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.action-history__items {
+    display: flex;
+    flex-direction: column;
 }
