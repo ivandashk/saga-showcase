@@ -2,6 +2,7 @@ import { useCallback, useEffect, useReducer, useState } from 'react';
 
 import { App } from '../app/app';
 import { rootSaga } from '../../sagas/index';
+import { cloneTree } from '../../utils/tree-utils/cloneTree';
 
 import { monitorReducer } from './monitor-initializer.reducer';
 
@@ -18,11 +19,22 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
         resolvedEffectsMap: {},
         effectsTree: []
     });
+    const [historyEffectsState, changeHistoryEffectsState] = useState(null);
 
     const updateEffectsQueue = useCallback((newQueue) => {
         effectsQueueFastBuffer = newQueue;
         changeEffectQueue(effectsQueueFastBuffer);
-    }, [])
+    }, []);
+
+    const handleHistoryItemClick = useCallback((index) => {
+        const newHistoryState = history[index] ? history[index].effectsState : null
+
+        changeHistoryEffectsState(newHistoryState);
+    }, [history]);
+
+    const handleButtonClick = useCallback(() => {
+        changeHistoryEffectsState(null);
+    }, []);
 
     useEffect(() => {
         if (!effectsQueue.length) return;
@@ -38,11 +50,15 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
                 effectId: typeof effectToPerform.payload === 'object'
                     ? effectToPerform.payload.effectId
                     : effectToPerform.payload,
-                effectsState: Object.assign({}, effectsQueueFastBuffer)
+                effectsState: {
+                    ...effectsState,
+                    effectsTree: cloneTree(effectsState.effectsTree)
+                }
             }];
             changeEffectHistory(historyFastBuffer);
         }, 500)
-    }, [effectsQueue, updateEffectsQueue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [effectsQueue]);
 
     useEffect(() => {
         sagaMonitor.rootSagaStarted = (effect) => {
@@ -62,5 +78,13 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <App effectsState={effectsState} history={history} />;
+    return (
+        <App
+            effectsState={historyEffectsState === null ? effectsState : historyEffectsState}
+            effectsMap={effectsState.effectsMap}
+            history={history}
+            onHistoryItemClick={handleHistoryItemClick}
+            handleButtonClick={handleButtonClick}
+        />
+    )
 };

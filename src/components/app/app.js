@@ -7,13 +7,14 @@ import { EffectsVisualizer } from '../effects-visualizer/effects-visualizer';
 
 import './app.css'
 
-export const App = ({ effectsState, history }) => {
+export const App = ({ effectsState, history, onHistoryItemClick, effectsMap, handleButtonClick }) => {
     const dispatch = useDispatch();
 
-    const { rootSagaStarted, effectsMap, effectsTree, actionHistory, resolvedEffectsMap } = effectsState;
+    const { rootSagaStarted, effectsTree, actionHistory, resolvedEffectsMap } = effectsState;
 
     const handleClick = useCallback(() => {
         dispatch({ type: 'Click' });
+        handleButtonClick()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -30,7 +31,7 @@ export const App = ({ effectsState, history }) => {
                     effectsTree={effectsTree}
                     resolvedEffectsMap={resolvedEffectsMap}
                 />
-                <EffectsHistory history={history} />
+                <EffectsHistory history={history} onItemClick={onHistoryItemClick} />
             </div>
         </>
     );

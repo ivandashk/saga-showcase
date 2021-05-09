@@ -1,7 +1,8 @@
+import { cloneTree } from './cloneTree';
 import { treeNodeUtils } from './three-node-utils';
 
 export const appendNode = (tree, id, parentId) => {
-    const newEffectsTree = [...tree];
+    const newEffectsTree = cloneTree(tree);
     const [parentNode] = treeNodeUtils.findNodes(newEffectsTree, node => node.key === String(parentId));
     const effectKey = String(id);
     
