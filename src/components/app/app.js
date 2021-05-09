@@ -10,7 +10,7 @@ export const App = ({ effectsState }) => {
     const { rootSagaStarted, effectsMap, effectsTree, actionHistory, resolvedEffectsMap } = effectsState;
 
     const handleClick = useCallback(() => {
-        dispatch({ type: 'Action' });
+        dispatch({ type: 'Click' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

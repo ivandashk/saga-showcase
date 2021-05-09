@@ -28,6 +28,8 @@ export const Block = ({ id, name, mod, payload, disabled, fullInfo }) => {
     const { modificator, additionalText} = chooseModData(mod, payload);
 
     const handleClick = useCallback(() => {
+        if (!fullInfo) return;
+
         console.log(fullInfo);
     }, [fullInfo]);
 

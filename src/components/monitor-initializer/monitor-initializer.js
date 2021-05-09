@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 
 import { App } from '../app/app';
 import { rootSaga } from '../../sagas/index';
@@ -40,6 +40,8 @@ const monitorReducer = (state, action) => {
     }
 }
 
+let effectsQueueFastBuffer = [];
+
 export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
     const [effectsState, dispatch] = useReducer(monitorReducer, {
         rootSagaStarted: false,
@@ -48,22 +50,38 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
         resolvedEffectsMap: {},
         effectsTree: []
     });
+    const [effectsQueue, changeEffectQueue] = useState([]);
+
+    const updateEffectsQueue = useCallback((newQueue) => {
+        effectsQueueFastBuffer = newQueue;
+        changeEffectQueue(effectsQueueFastBuffer);
+    }, [])
+
+    useEffect(() => {
+        if (!effectsQueue.length) return;
+
+        setTimeout(() => {
+            dispatch(effectsQueue[effectsQueue.length - 1]);
+            updateEffectsQueue(effectsQueueFastBuffer.slice(0, -1));
+        }, 500)
+    }, [effectsQueue, updateEffectsQueue])
 
     useEffect(() => {
         sagaMonitor.rootSagaStarted = (effect) => {
-            console.log(effect)
-            dispatch({ type: 'rootSagaStarted' });
+            console.log(effect);
+            updateEffectsQueue([{ type: 'rootSagaStarted' }, ...effectsQueueFastBuffer]);
         };
         sagaMonitor.effectTriggered = (effect) => {
-            console.log(effect)
-            dispatch({ type: 'effectTriggered', payload: effect });
+            console.log(effect);
+            updateEffectsQueue([{ type: 'effectTriggered', payload: effect }, ...effectsQueueFastBuffer]);
         }
         sagaMonitor.actionDispatched = (action) => {
-            dispatch({ type: 'actionDispatched', payload: action });
+            // dispatch({ type: 'actionDispatched', payload: action });
+            updateEffectsQueue([{ type: 'actionDispatched', payload: action }, ...effectsQueueFastBuffer]);
         }
         sagaMonitor.effectResolved = (effectId) => {
-            dispatch({ type: 'effectResolved', payload: effectId });
-        }
+            updateEffectsQueue([{ type: 'effectResolved', payload: effectId }, ...effectsQueueFastBuffer]);
+        };
 
         sagaMiddleware.run(rootSaga);
     // eslint-disable-next-line react-hooks/exhaustive-deps
