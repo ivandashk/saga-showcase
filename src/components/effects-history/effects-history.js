@@ -1,3 +1,5 @@
+import { prettifyType } from './effects-history.utils';
+
 import './effects-history.css'
 
 export const EffectsHistory = ({ history, onItemClick, effectsMap }) => {
@@ -18,7 +20,10 @@ export const EffectsHistory = ({ history, onItemClick, effectsMap }) => {
                             key={`${type}${effectId}${i}`}
                             onClick={() => { onItemClick(i + 1) }}
                         >
-                            <div className={'effects-history__item-type'}>{type}</div>
+                            <div className={'effects-history__item-prefix'}>
+                                <div className={'effects-history__item-icon'}>{prettifyType(type)}</div>
+                                <div className={'effects-history__item-type'}>{type}</div>
+                            </div>
                             <div className={'effects-history__item-content'}>
                                 {content}
                             </div>

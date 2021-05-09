@@ -15,6 +15,14 @@
     justify-content: space-between;
 }
 
+.effects-history__item-prefix {
+    display: flex;
+}
+
+.effects-history__item-icon {
+    padding-right: 5px;
+}
+
 .effects-history__item-type {
     font-style: italic;
 }
