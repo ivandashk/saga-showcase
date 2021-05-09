@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import './block.css'
 
 const chooseModData = (mod, payload) => {
@@ -26,8 +27,16 @@ const chooseModData = (mod, payload) => {
 export const Block = ({ id, name, mod, payload, disabled, fullInfo }) => {
     const { modificator, additionalText} = chooseModData(mod, payload);
 
+    const handleClick = useCallback(() => {
+        console.log(fullInfo);
+    }, [fullInfo]);
+
     return (
-        <div className={`block ${modificator ? `block_${modificator}` : ''} ${disabled ? `block_disabled` : ''}`} title={fullInfo}>
+        <div
+            className={`block ${modificator ? `block_${modificator}` : ''} ${disabled ? `block_disabled` : ''}`}
+            title={fullInfo}
+            onClick={handleClick}
+        >
             <div className={'block__main-text'}>{id ? `${id}: ${name}` : name}</div>
             <div className={'block__add-text'}>{additionalText}</div>
         </div>
