@@ -25,7 +25,7 @@ const Row = ({ effectsTree, effectsMap, resolvedEffectsMap }) => {
 
         return children
             ? (
-                <div key={`row_of_${effectId}`}>
+                <div key={effectId}>
                     {block}
                     <div className={'effects-visualizer__tree-row'}>
                         <Row effectsTree={children} effectsMap={effectsMap} resolvedEffectsMap={resolvedEffectsMap} />

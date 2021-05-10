@@ -7,30 +7,3 @@
     display: flex;
     flex-flow: column;
 }
-
-.effects-history__item {
-    max-width: 300px;
-    padding: 5px 10px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.effects-history__item-prefix {
-    display: flex;
-}
-
-.effects-history__item-icon {
-    padding-right: 5px;
-}
-
-.effects-history__item-type {
-    font-style: italic;
-}
-
-.effects-history__item-content {
-    font-weight: bold;
-}
-
-.effects-history__item + .effects-history__item {
-    margin-top: 2px;
-}

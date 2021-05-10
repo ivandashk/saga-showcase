@@ -1,33 +1,29 @@
-import { prettifyType } from './effects-history.utils';
+import { EffectsHistoryItem } from './__item/effects-history__item';
 
 import './effects-history.css'
 
-export const EffectsHistory = ({ history, onItemClick, effectsMap }) => {
+export const EffectsHistory = ({ history, onItemClick, effectsMap, currentIndex }) => {
     return (
         <div className={'effects-history'}>
             <h3>History</h3>
             <div className={'effects-history__items'}>
                 {history.map(({ type, effectId }, i) => {
                     const effect = effectsMap[effectId];
+                    const isCurrent = currentIndex === i;
 
                     const content = effect
                         ? `${effectId}: ${effect.effect.type}`
                         : effectId || ''
 
                     return (
-                        <button
-                            className={'effects-history__item'}
+                        <EffectsHistoryItem
                             key={`${type}${effectId}${i}`}
-                            onClick={() => { onItemClick(i + 1) }}
-                        >
-                            <div className={'effects-history__item-prefix'}>
-                                <div className={'effects-history__item-icon'}>{prettifyType(type)}</div>
-                                <div className={'effects-history__item-type'}>{type}</div>
-                            </div>
-                            <div className={'effects-history__item-content'}>
-                                {content}
-                            </div>
-                        </button>
+                            type={type}
+                            isCurrent={isCurrent}
+                            index={i}
+                            content={content}
+                            onClick={onItemClick}
+                        />
                     )
                 })}
             </div>

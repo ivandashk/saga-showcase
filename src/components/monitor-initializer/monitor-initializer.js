@@ -20,6 +20,7 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
         effectsTree: []
     });
     const [historyEffectsState, changeHistoryEffectsState] = useState(null);
+    const [currentHistoryItemIndex, changeCurrentHistoryItemIndex] = useState(null);
 
     const updateEffectsQueue = useCallback((newQueue) => {
         effectsQueueFastBuffer = newQueue;
@@ -27,13 +28,15 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
     }, []);
 
     const handleHistoryItemClick = useCallback((index) => {
-        const newHistoryState = history[index] ? history[index].effectsState : null
+        const newHistoryState = history[index + 1] ? history[index + 1].effectsState : null;
 
         changeHistoryEffectsState(newHistoryState);
+        changeCurrentHistoryItemIndex(index);
     }, [history]);
 
     const handleButtonClick = useCallback(() => {
         changeHistoryEffectsState(null);
+        changeCurrentHistoryItemIndex(null);
     }, []);
 
     useEffect(() => {
@@ -85,6 +88,7 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
             history={history}
             onHistoryItemClick={handleHistoryItemClick}
             handleButtonClick={handleButtonClick}
+            currentHistoryItemIndex={currentHistoryItemIndex}
         />
     )
 };
