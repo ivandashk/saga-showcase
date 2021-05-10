@@ -1,27 +1,17 @@
-import { useLayoutEffect, useRef } from 'react';
-
 import { EffectsHistoryItem } from './__item/effects-history__item';
 
 import './effects-history.css'
 
 export const EffectsHistory = ({ history, onItemClick, effectsMap, currentIndex }) => {
-    const itemsRef = useRef(null);
-
-    useLayoutEffect(() => {
-        if (currentIndex === null) {
-            itemsRef.current.scrollTop = itemsRef.current.scrollHeight;
-        }
-    })
-
     return (
         <div className={'effects-history'}>
             <h3>History</h3>
-            <div className={'effects-history__items'} ref={itemsRef}>
+            <div className={'effects-history__items'}>
                 {history.map(({ type, effectId }, i) => {
                     const effect = effectsMap[effectId];
                     const isCurrent = currentIndex === i;
 
-                    const content = effect
+                    const content = effect && effect.effect.type
                         ? `${effectId}: ${effect.effect.type}`
                         : effectId || ''
 

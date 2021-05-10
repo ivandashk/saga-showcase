@@ -1,5 +1,3 @@
-import { useLayoutEffect, useRef } from 'react';
-
 import { EffectsVisualizerRow } from './__row/effects-visualizer__row';
 
 import './effects-visualizer.css';
@@ -10,16 +8,10 @@ export const EffectsVisualizer = ({
     effectsTree,
     resolvedEffectsMap
 }) => {
-    const contentRef = useRef(null);
-
-    useLayoutEffect(() => {
-        contentRef.current.scrollTop = contentRef.current.scrollHeight;
-    })
-
     return (
         <div className={'effects-visualizer'}>
             <h3>Effects</h3>
-            <div className={'effects-visualizer__content'} ref={contentRef}>
+            <div>
                 {rootSagaStarted && <h4 className={'effects-visualizer__success-subtitle'}>✔️ Root Saga Started</h4>}
                 
                 {Boolean(effectsTree.length) && 

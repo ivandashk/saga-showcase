@@ -2,7 +2,6 @@ import { useCallback, useEffect, useReducer, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { App } from '../app/app';
-import { rootSaga } from '../../sagas/index';
 import { cloneTree } from '../../utils/tree-utils/cloneTree';
 
 import { monitorReducer } from './monitor-initializer.reducer';
@@ -11,7 +10,7 @@ let queueExecuting = false;
 let effectsQueueFastBuffer = [];
 let historyFastBuffer = [];
 
-export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
+export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware, rootSaga, code }) => {
     const dispatch = useDispatch();
 
     const [effectsQueue, changeEffectQueue] = useState([]);
@@ -102,6 +101,7 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
             onHistoryItemClick={handleHistoryItemClick}
             handleButtonClick={handleButtonClick}
             currentHistoryItemIndex={currentHistoryItemIndex}
+            code={code}
         />
     )
 };

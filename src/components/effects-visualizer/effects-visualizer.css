@@ -1,13 +1,6 @@
 .effects-visualizer {
     flex-basis: 0;
     flex-grow: 1;
-    height: 100%;
-}
-
-.effects-visualizer__content {
-    height: 90%;
-    overflow: auto;
-    scroll-behavior: smooth;
 }
 
 .effects-visualizer__success-subtitle {
