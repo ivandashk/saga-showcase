@@ -17,8 +17,7 @@ export function* rootSaga() {
 };
 
 export const code = 
-`
-    function* chain1() {
+`   function* chain1() {
         yield put({ type: 'CHAIN_1' })
     };
 

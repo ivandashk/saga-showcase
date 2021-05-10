@@ -12,8 +12,7 @@ export function* rootSaga() {
 };
 
 export const code = 
-`
-    function* actions() {
+`   function* actions() {
         yield put({ type: 'PUT_ACTION' });
     };
 

@@ -14,8 +14,7 @@ export function* rootSaga() {
 };
 
 export const code = 
-`
-    function* functions() {
+`   function* functions() {
         yield (arg => arg)('fn_arg');
         const callRes = yield call(arg => arg , 'call_fn_arg');
         yield callRes;

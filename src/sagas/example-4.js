@@ -19,8 +19,7 @@ export function* rootSaga() {
 }
 
 export const code = 
-`
-    function* fetchAll() {
+`   function* fetchAll() {
         yield fork(fetchResource, 'users');
         yield spawn(fetchResource, 'comments');
     }
