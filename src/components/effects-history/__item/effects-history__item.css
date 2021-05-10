@@ -3,6 +3,7 @@
     padding: 5px 10px;
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .effects-history__item + .effects-history__item {

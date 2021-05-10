@@ -8,7 +8,7 @@ export const EffectsHistory = ({ history, onItemClick, effectsMap, currentIndex 
     const itemsRef = useRef(null);
 
     useLayoutEffect(() => {
-        if (!currentIndex) {
+        if (currentIndex === null) {
             itemsRef.current.scrollTop = itemsRef.current.scrollHeight;
         }
     })
