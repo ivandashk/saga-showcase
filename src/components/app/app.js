@@ -22,7 +22,7 @@ export const App = ({
     }, []);
 
     return (
-        <>
+        <div className={'app'}>
             <button className={'app__action-button'} onClick={handleClick}>Dispatch Action</button>
 
             <div className={'app__effects'}>
@@ -40,6 +40,6 @@ export const App = ({
                 />
                 <ActionHistory actionHistory={actionHistory} />
             </div>
-        </>
+        </div>
     );
 };

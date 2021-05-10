@@ -1,9 +1,13 @@
 .effects-history {
     flex-basis: 0;
     flex-grow: 1;
+    height: 100%;
 }
 
 .effects-history__items {
     display: flex;
     flex-flow: column;
+    height: 90%;
+    overflow: auto;
+    scroll-behavior: smooth;
 }
