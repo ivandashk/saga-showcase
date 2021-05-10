@@ -18,7 +18,7 @@ const store = configureAppStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router basename={'/saga-showcase'}>
       <Switch>
         {examplesConfig.map(({ slug, code, rootSaga } ) => (
           <Route path={`/${slug}`} key={slug}>
