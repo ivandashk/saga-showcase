@@ -7,6 +7,7 @@ import { cloneTree } from '../../utils/tree-utils/cloneTree';
 
 import { monitorReducer } from './monitor-initializer.reducer';
 
+let queueExecuting = false;
 let effectsQueueFastBuffer = [];
 let historyFastBuffer = [];
 
@@ -25,9 +26,12 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
     const [historyEffectsState, changeHistoryEffectsState] = useState(null);
     const [currentHistoryItemIndex, changeCurrentHistoryItemIndex] = useState(null);
 
-    const updateEffectsQueue = useCallback((newQueue) => {
+    const updateEffectsQueue = useCallback((newQueue, shouldUpdateQueue) => {
         effectsQueueFastBuffer = newQueue;
-        changeEffectQueue(effectsQueueFastBuffer);
+
+        if (shouldUpdateQueue) {
+            changeEffectQueue(effectsQueueFastBuffer);
+        }
     }, []);
 
     const handleHistoryItemClick = useCallback((index) => {
@@ -45,13 +49,17 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
     }, []);
 
     useEffect(() => {
-        if (!effectsQueue.length) return;
+        if (!effectsQueue.length) {
+            queueExecuting = false;
+            return;
+        };
 
+        queueExecuting = true;
         setTimeout(() => {
             const effectToPerform = effectsQueue[effectsQueue.length - 1];
 
             monitorReducerDispatch(effectToPerform);
-            updateEffectsQueue(effectsQueueFastBuffer.slice(0, -1));
+            updateEffectsQueue(effectsQueueFastBuffer.slice(0, -1), true);
 
             historyFastBuffer = [...historyFastBuffer, {
                 type: effectToPerform.type,
@@ -70,16 +78,16 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
 
     useEffect(() => {
         sagaMonitor.rootSagaStarted = (effect) => {
-            updateEffectsQueue([{ type: 'rootSagaStarted', payload: effect.effectId }, ...effectsQueueFastBuffer]);
+            updateEffectsQueue([{ type: 'rootSagaStarted', payload: effect.effectId }, ...effectsQueueFastBuffer], !queueExecuting);
         };
         sagaMonitor.effectTriggered = (effect) => {
-            updateEffectsQueue([{ type: 'effectTriggered', payload: effect }, ...effectsQueueFastBuffer]);
+            updateEffectsQueue([{ type: 'effectTriggered', payload: effect }, ...effectsQueueFastBuffer], !queueExecuting);
         }
         sagaMonitor.actionDispatched = (action) => {
-            updateEffectsQueue([{ type: 'actionDispatched', payload: action }, ...effectsQueueFastBuffer]);
+            updateEffectsQueue([{ type: 'actionDispatched', payload: action }, ...effectsQueueFastBuffer], !queueExecuting);
         }
         sagaMonitor.effectResolved = (effectId) => {
-            updateEffectsQueue([{ type: 'effectResolved', payload: effectId }, ...effectsQueueFastBuffer]);
+            updateEffectsQueue([{ type: 'effectResolved', payload: effectId }, ...effectsQueueFastBuffer], !queueExecuting);
         };
 
         sagaMiddleware.run(rootSaga);
