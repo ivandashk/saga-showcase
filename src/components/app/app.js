@@ -1,4 +1,3 @@
-import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 
 import { ActionHistory } from '../action-history/action-history';
@@ -15,12 +14,9 @@ export const App = ({
     handleButtonClick,
     currentHistoryItemIndex
 }) => {
-    const dispatch = useDispatch();
-
     const { rootSagaStarted, effectsTree, actionHistory, resolvedEffectsMap } = effectsState;
 
     const handleClick = useCallback(() => {
-        dispatch({ type: 'Click' });
         handleButtonClick()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

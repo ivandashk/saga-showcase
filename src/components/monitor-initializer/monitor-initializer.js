@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useReducer, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { App } from '../app/app';
 import { rootSaga } from '../../sagas/index';
@@ -10,9 +11,11 @@ let effectsQueueFastBuffer = [];
 let historyFastBuffer = [];
 
 export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
+    const dispatch = useDispatch();
+
     const [effectsQueue, changeEffectQueue] = useState([]);
     const [history, changeEffectHistory] = useState([]);
-    const [effectsState, dispatch] = useReducer(monitorReducer, {
+    const [effectsState, monitorReducerDispatch] = useReducer(monitorReducer, {
         rootSagaStarted: false,
         effectsMap: {},
         actionHistory: [],
@@ -37,6 +40,8 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
     const handleButtonClick = useCallback(() => {
         changeHistoryEffectsState(null);
         changeCurrentHistoryItemIndex(null);
+        dispatch({ type: 'Click' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -45,7 +50,7 @@ export const MonitorInitializer = ({ sagaMonitor, sagaMiddleware }) => {
         setTimeout(() => {
             const effectToPerform = effectsQueue[effectsQueue.length - 1];
 
-            dispatch(effectToPerform);
+            monitorReducerDispatch(effectToPerform);
             updateEffectsQueue(effectsQueueFastBuffer.slice(0, -1));
 
             historyFastBuffer = [...historyFastBuffer, {
