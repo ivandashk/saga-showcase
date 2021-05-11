@@ -4,6 +4,7 @@
     display: flex;
     justify-content: space-between;
     cursor: pointer;
+    align-items: center;
 }
 
 .effects-history__item + .effects-history__item {
@@ -16,6 +17,7 @@
 
 .effects-history__item-prefix {
     display: flex;
+    align-items: center;
 }
 
 .effects-history__item-icon {
